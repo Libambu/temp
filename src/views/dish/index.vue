@@ -4,13 +4,21 @@
             <label style="float: left; padding: 9px;">菜品名称：</label>
             <el-input
                 v-model="name"
-                placeholder="请输入菜品名称"
-                style="margin-right: 10px; width: 30%; float: left;"
+                placeholder="请输入关键词"
+                style="margin-right: 10px; width: 20%; float: left;"
                 clearable
             />
-            <el-button type="primary" style="float: left" @click="dishQuary()">查询</el-button>
-            <el-button type="primary" style="float: right" @click="addDish()">+ 添加菜品</el-button>
-            <el-button type="primary" style="float: right" @click="dialogTableVisible = true">+ 添加分类</el-button>
+            <label style="float: left;margin-left: 50px; padding: 9px;">类别：</label>
+            <el-select v-model="category" filterable placeholder="请输入关键词"  style="margin-right: 10px; width: 20%; float: left;">
+                <el-option 
+                    v-for="item in options"
+                    :key="item.name"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+            </el-select>
+            <el-button type="primary" style="float: right;margin-left: 10px" @click="addDish()">+ 添加菜品</el-button>
+            <el-button type="primary" style="float: right;margin-left: 10px" @click="dialogTableVisible = true">+ 添加分类</el-button>
             <el-dialog title="新建分类" :visible.sync="dialogTableVisible" :append-to-body="true" center>
                 <lable>分类名: </lable>
                 <el-input
@@ -23,6 +31,8 @@
                     <el-button type="primary" @click="createCategory(newCategory)">确 定</el-button>
                 </span>
             </el-dialog>
+            <el-button type="danger" style="float: right;margin-left: 10px" @click="deleteCategory()">删除分类</el-button>
+            <el-button type="primary" style="float: right;margin-left: 10px" @click="dishQuary()">查询</el-button>
         </div>
         <el-table
             :data="records"
@@ -104,11 +114,23 @@
                 page:1,//页码
                 pageSize:10,//每页菜品数
                 total:0,//总菜品数
-                records:[]//当前页菜品集合
+                records:[],//当前页菜品集合
+                category:'',
+                options:[]//分类集合
             }
         },
         created(){
             this.dishQuary()
+            axios.get('/elm/admin/category',{
+                headers:{
+                    'adminToken': localStorage.getItem('adminToken')
+                }
+            }).then(res =>{
+                this.options=res.data.data
+                console.log(res.data);
+            }).catch(err =>{
+                console.log(err);
+            })
         },
         methods:{
             //查询菜品
@@ -119,6 +141,7 @@
                     },
                     params:{
                         name:this.name,
+                        category:this.category,
                         page:this.page,
                         pageSize:this.pageSize
                     }
@@ -159,7 +182,7 @@
                             foodId:row.foodId
                         }
                     }).then(res =>{
-                        if(res.data.code === 200){
+                        if(res.data.code == 200){
                             this.$message.success('已修改')
                             this.dishQuary()
                         }else{
@@ -174,32 +197,58 @@
             addDish(){
                 this.$router.push('/home/dish/dishInfo')
             },
+            //修改菜品信息
             changeDish(row){
                 this.$router.push({
                     path: '/home/dish/dishInfo',
-                    query: {'adminToken': localStorage.getItem('adminToken'),
-                            'id':row.foodId}
+                    query: {
+                        'id':row.foodId
+                    }
                 })
             },
             //添加分类
             createCategory(){
                 axios.post('/elm/admin/category/',null,{
+                    headers:{
+                        'adminToken': localStorage.getItem('adminToken'),
+                    },
+                    params:{
+                        categoryName: this.newCategory
+                    }
+                }).then(res =>{
+                    if(res.data.code == 200){
+                        this.$message.success('已修改')
+                        this.dialogTableVisible=false
+                    }else{
+                        this.$message.info('修改失败')
+                    }
+                }).catch(err =>{
+                    console.log(err);
+                })
+            },
+            //删除分类
+            deleteCategory(){
+                if(!this.category){
+                    this.$message.warning('操作失败，分类不能为空！')
+                }else{
+                    axios.post('/elm/admin/category',{
                         headers:{
                             'adminToken': localStorage.getItem('adminToken'),
                         },
                         params:{
-                            categoryName: this.newCategory
+                            categoryName:this.category
                         }
                     }).then(res =>{
-                        if(res.data.code === 1){
-                            this.$message.success('已修改')
+                        if(res.data.code == 200){
+                            this.$message.success('删除成功')
                             this.dialogTableVisible=false
                         }else{
-                            this.$message.info('修改失败')
+                            this.$message.info('删除失败')
                         }
                     }).catch(err =>{
                         console.log(err);
                     })
+                }
             }
         }
     }

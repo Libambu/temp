@@ -12,6 +12,7 @@
           class="upload-demo"
           v-model="ruleForm.picture"
           drag
+          show-file-list:true
           action="https://jsonplaceholder.typicode.com/posts/"
           multiple>
           <i class="el-icon-upload"></i>
@@ -20,7 +21,7 @@
         </el-upload>
       </el-form-item>
       <el-form-item label="菜品分类" prop="category">
-        <el-select v-model="ruleForm.category" filterable placeholder="请输入关键词" style="width: 675px;">
+        <el-select v-model="ruleForm.category" filterable placeholder="请输入关键词"  style="width: 675px;">
           <el-option 
             v-for="item in options"
             :key="item.name"
@@ -65,14 +66,13 @@
         },
         rules: {
           name: [
-            { required: true, message: '请输入菜品名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { required: true, message: '请输入菜品名称', trigger: 'blur' }
           ],
           picture: [
-            { required: false, message: '请上传商品图片', trigger: 'change' }
+            { required: false, message: '请上传商品图片', trigger: 'blur' }
           ],
           category: [
-            { required: true, message: '请选择菜品分类', trigger: 'change' }
+            { required: true, message: '请选择菜品分类', trigger: 'blur' }
           ],
           price: [
             { required: true, message: '请输入价格', trigger: 'blur' }
@@ -84,22 +84,22 @@
       };
     },
     created() {
-      this.optType = this.$router.query.adminToken ? 'update' : 'add'
-      if(this.optType == 'update'){
+      this.optType = this.$route.query.id ? 'update' : 'add'
+      if(this.optType === 'update'){
         axios.get('/elm/admin/dish',{
-          header:{
-            'adminToken': this.$router.query.adminToken,
+          headers:{
+            'adminToken': localStorage.getItem('adminToken')
           },
           params:{
-            'id': this.$router.query.id
+            'id': this.$route.query.id
           }
         }).then(res =>{
-          this.ruleForm.name = res.data.dish.foodName,
-          this.ruleForm.picture = res.data.dish.foodImg,
-          this.ruleForm.category = res.data.dish.categoryName,
-          this.ruleForm.price = res.data.dish.foodPrice,
-          this.ruleForm.explain = res.data.dish.foodExplain,
-          this.ruleForm.remarks = res.data.dish.remarks
+          this.ruleForm.name = res.data.data.foodName,
+          this.ruleForm.picture = res.data.data.foodImg,
+          this.ruleForm.category = res.data.data.categoryName,
+          this.ruleForm.price = res.data.data.foodPrice,
+          this.ruleForm.explain = res.data.data.foodExplain,
+          this.ruleForm.remarks = res.data.data.remarks
         }).catch(err =>{
           console.log(err);
         })
@@ -109,8 +109,7 @@
           'adminToken': localStorage.getItem('adminToken')
         }
       }).then(res =>{
-        this.options.name = res.data.data.categoryName
-        this.options.id = res.data.data.categoryID
+        this.options=res.data.data
         console.log(res.data);
       }).catch(err =>{
         console.log(err);
