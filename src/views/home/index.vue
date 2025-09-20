@@ -1,33 +1,34 @@
 <template>
-  <div class="layout">
+  <el-container class="layout">
     <!-- 顶部通栏导航 -->
-    <header class="top-bar">
-      <div class="logo" style="font-size: 30px;">饱了吗商家管理端</div>
+    <el-header style="height: 100px;width: 100%;">
+      <i class="el-icon-platform-eleme" style="font-size: 40px;margin-right: 10px;"></i>
+      <div class="logo" style="font-size: 30px;float: left;">饱了吗商家管理端</div>
       <!--用户退出-->
-      <div style="font-size: 20px; ">{{ $store.state.businessName }}</div>
-      <span class="logout-btn" @click="handleLogout" style=" ">退出登录</span>
-    </header>
+      <div style=";font-size: 20px;position:absolute;right:200px">{{ $store.state.businessName }}</div>
+      <el-button type="text" @click="handleLogout" style="font-size: 25px;color: #fff;margin-left: auto;">退出登录</el-button>
+    </el-header>
 
     <!-- 下方主体区：左侧边栏 + 右侧内容 -->
-    <div class="main-body">
+    <el-container class="main-body">
       <!-- 左侧边栏 -->
-      <aside class="side-bar">
-        <router-link to="/home/info" class="nav-item" active-class="active">我的信息</router-link>
-        <router-link to="/home/category" class="nav-item" active-class="active">分类管理</router-link>
-        <router-link to="/home/dish" class="nav-item" active-class="active">菜品管理</router-link>
-        <router-link to="/home/order" class="nav-item" active-class="active">订单管理</router-link>
-        <router-link to="/home/statistics" class="nav-item" active-class="active">数据统计</router-link>
+      <el-aside class="side-bar" >
+        <router-link to="/home/info" class="nav-item el-icon-user" active-class="active"> 我的信息</router-link>
+        <router-link to="/home/dish" class="nav-item el-icon-dish" active-class="active"> 菜品管理</router-link>
+        <router-link to="/home/category" class="nav-item el-icon-menu" active-class="active"> 分类管理</router-link>
+        <router-link to="/home/order" class="nav-item el-icon-s-order" active-class="active"> 订单管理</router-link>
+        <router-link to="/home/statistics" class="nav-item el-icon-s-data" active-class="active"> 数据统计</router-link>
 
-      </aside>
+      </el-aside>
 
       <!-- 右侧内容区（嵌套路由） -->
-      <main class="content">
+      <el-main class="content">
         <div id="main">
             <router-view/>
         </div>
-      </main>
-    </div>
-  </div>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script>
@@ -67,8 +68,8 @@ export default {
 
 <style scoped>
 /* 整体布局 */
-.layout {
-  height: 100vh;
+.layout{
+  height: 950px;
   min-width: 1400px;
   display: flex;
   flex-direction: column;
@@ -77,26 +78,18 @@ export default {
   opacity: .999;
 }
 /* 顶部通栏 */
-.top-bar {
-  height: 80px;
-  width: 100%;
+.el-header{
   background: #409eff;
   color: #fff;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  font-size: 18px;
-  font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .08);
-  flex-shrink: 0;
 }
 
 /* 下方主体区 */
 .main-body {
   flex: 1;
   display: flex;
-  overflow: hidden;
+  overflow: auto;
 }
 
 /* 左侧边栏 */
@@ -113,10 +106,9 @@ export default {
 
 .nav-item {
   display: block;
-  height: 60px;
-  line-height: 48px;
-  padding: 10px 32px;
-  font-size: 16px;
+  line-height:100px;
+  font-size: 20px;
+  text-align: center;
   color: #cfd3dc;
   text-decoration: none;
   border-radius: 6px;
@@ -140,19 +132,11 @@ export default {
   overflow: auto;
 }
 #main {
-  min-height: 100%;
+  min-height: 700px;
   background: #f5f7fa;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
   padding: 24px;
 }
-.logout-btn {
-  margin-left: 16px;
-  cursor: pointer;
-  color: #fff;
-  font-size: 16px;
-}
-.logout-btn:hover {
-  text-decoration: underline;
-}
+
 </style>

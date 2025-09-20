@@ -148,7 +148,7 @@ export default {
   data() {
     return {
       // 商家信息
-      businessName: "123",
+      businessName: "",
       businessAddress: "",
       businessImg: null, // 最终要上传的 File 对象
       businessExplain: "",
@@ -266,15 +266,17 @@ export default {
 
   /* ✅ 1. 放宽最大宽度：640→840 */
   .info-perfect {
-    max-width: 1000px;
+    max-width: 100%;
+    max-height: max-content;
+    padding: 20px 20px 20px 20px;
   /* ✅ 2. 左右内边距再大点，让卡片更饱满 */
     background: var(--glass);
-    background-color: #f2f5fa;
+    background-color: #fff;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     border: 1px solid var(--line);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-lg);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
   }
 
   h2 { text-align: center; margin: 1px 5px; font-size: 20px; font-weight: 600; color: var(--text1); letter-spacing: 0.5px; }

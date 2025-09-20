@@ -7,7 +7,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('../views/login/login.vue')
+    component: () => import('../views/login/index.vue')
   },
   {
     path: '/',
@@ -16,28 +16,32 @@ const routes: Array<RouteConfig> = [
   {
     path: '/home',
     name: 'home',
-    component: () => import('../views/home/home.vue'),
+    component: () => import('../views/home/index.vue'),
     redirect: '/home/info',
     children:[
       {
         path: '/home/info',
-        component: () => import( '../views/page/info.vue'),
+        component: () => import( '../views/info/index.vue'),
       },
       {
         path: '/home/category',
-        component: () => import( '../views/page/category.vue'),
+        component: () => import( '../views/category/index.vue'),
       },
       {
         path: '/home/dish',
-        component: () => import( '../views/page/dish.vue'),
+        component: () => import( '../views/dish/index.vue'),
+      },
+      {
+        path: '/home/dish/dishInfo',
+        component:() => import( '../views/dish/dishInfo.vue'),
       },
       {
         path: '/home/order',
-        component: () => import( '../views/page/order.vue'),
+        component: () => import( '../views/order/index.vue'),
       },
       {
         path: '/home/statistics',
-        component: () => import( '../views/page/statistics.vue'),
+        component: () => import( '../views/statistics/index.vue'),
       }
     ]
   }
@@ -50,6 +54,7 @@ const router = new VueRouter({
 
 
 /* ===== 全局前置守卫 ===== */
+/*
 router.beforeEach((to, from, next) => {
   const hasToken = Cookies.get('adminToken')        // 读登录凭证
   const whiteList = ['/login']                      // 白名单，无需登录
@@ -68,6 +73,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
+*/
 
 export default router
 
