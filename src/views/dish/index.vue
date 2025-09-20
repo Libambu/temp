@@ -10,7 +10,15 @@
             />
             <el-button type="primary" style="float: left" @click="dishQuary()">查询</el-button>
             <el-button type="primary" style="float: right" @click="addDish()">+ 添加菜品</el-button>
-            <el-button type="primary" style="float: right" @click="addDish()">+ 添加分类</el-button>
+            <el-button type="primary" style="float: right" @click="dialogTableVisible = true">+ 添加分类</el-button>
+            <el-dialog title="收货地址" :visible.sync="dialogTableVisible" :append-to-body="true">
+                <h3>添加分类</h3>
+                <el-input
+                    placeholder="请输入内容"
+                    v-model="input"
+                    clearable>
+                </el-input>
+            </el-dialog>
         </div>
         <el-table
             :data="records"
@@ -22,23 +30,26 @@
                 width="50">
             </el-table-column>
             <el-table-column
-                prop="picture"
+                prop="foodImg"
                 label="图片"
                 width="100">
+                <template slot-scope="scope">
+                    <img :src="scope.row.foodImg" min-width="70" height="70"/>
+                </template>
             </el-table-column>
             <el-table-column
-                prop="name"
+                prop="foodName"
                 label="名称"
-                width="100">
+                width="200" >
             </el-table-column>
             <el-table-column
-                prop="category"
+                prop="categoryName"
                 label="类别"
-                width="100">
+                width="150">
             </el-table-column>
             <el-table-column
-                prop="price"
-                label="售价"
+                prop="foodPrice"
+                label="售价（元）"
                 width="100">
             </el-table-column>
             <el-table-column
@@ -48,6 +59,11 @@
                 <template slot-scope="scope">
                     {{ scope.row.status == 0 ? '禁用' : '启用' }}
                 </template>
+            </el-table-column>
+            <el-table-column
+                prop="foodExplain"
+                label="商品介绍"
+                width="100" >
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -78,11 +94,12 @@
         name: "dishView",
         data(){
             return{
+                dialogTableVisible: false,
                 name:'',//菜品名称
                 page:1,//页码
                 pageSize:10,//每页菜品数
                 total:0,//总菜品数
-                records:[{name:'jiaozi' ,status:1},{status:0},{status:1},{status:1},{status:1},{status:1},{status:1},{status:1},{status:1},{status:1},]//当前页菜品集合
+                records:[]//当前页菜品集合
             }
         },
         created(){
@@ -92,8 +109,10 @@
             //查询菜品
             dishQuary(){
                 axios.get('/elm/admin/dish/page',{
-                    params:{
+                    headers:{
                         'adminToken': localStorage.getItem('adminToken'),
+                    },
+                    params:{
                         name:this.name,
                         page:this.page,
                         pageSize:this.pageSize
@@ -127,8 +146,10 @@
                         status : !row.status ? 1:0
                     }
                     axios.post('/elm/admin/dish/',null,{
-                        params:{
+                        headers:{
                             'adminToken': localStorage.getItem('adminToken'),
+                        },
+                        params:{
                             status:p.status
                         }
                     }).then(res =>{

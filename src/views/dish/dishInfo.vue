@@ -101,7 +101,9 @@
       this.optType = this.$router.query.adminToken ? 'update' : 'add'
       if(this.optType == 'update'){
         axios.get('/elm/admin/category',{
-          'adminToken': this.$router.query.adminToken
+          header:{
+            'adminToken': this.$router.query.adminToken
+          }
         }).then(res =>{
           this.ruleForm.name = res.data.dish.name,
           this.ruleForm.picture = res.data.dish.picture,
@@ -112,7 +114,9 @@
         })
       }
       axios.get('/elm/admin/category',{
-        'adminToken': localStorage.getItem('adminToken')
+        headers:{
+          'adminToken': localStorage.getItem('adminToken')
+        }
       }).then(res =>{
         this.options = res.data.category.names
         console.log(res.data);
@@ -135,7 +139,7 @@
                 const status = 0;
               }
               axios.post('/elm/admin/dish/',null,{
-                params:{
+                headers:{
                   'adminToken': localStorage.getItem('adminToken'),
                   name: this.ruleForm.name,
                   picture: this.ruleForm.picture,

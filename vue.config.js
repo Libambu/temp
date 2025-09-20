@@ -5,7 +5,7 @@ module.exports = defineConfig({
     port: 8081,
     proxy: {
       '/elm': {
-        target: 'http://localhost:8080',
+        target: 'http://192.168.137.1:8080',
         changeOrigin: true,
         pathRewrite: {
           '^/elm': '/elm'

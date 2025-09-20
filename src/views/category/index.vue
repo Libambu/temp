@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="tableBar">
-            <el-select v-model="category" filterable placeholder="请输入关键词" style="width: 675px;">
+            <el-select v-model="categoryKey" filterable placeholder="请输入关键词" style="width: 675px;">
                 <el-option 
                     v-for="item in options"
                     :key="item.value"
@@ -10,7 +10,14 @@
                 </el-option>
             </el-select>
             <el-button type="primary" style="float: left" @click="dishQuary()">查询</el-button>
-            <el-button type="primary" style="float: right" @click="addDish()">+ 添加菜品</el-button>
+            <el-button type="primary" style="float: right" @click="dialogTableVisible = true">+ 添加菜品</el-button>
+            <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
+                <el-table :data="gridData">
+                    <el-table-column property="date" label="日期" width="150"></el-table-column>
+                    <el-table-column property="name" label="姓名" width="200"></el-table-column>
+                    <el-table-column property="address" label="地址"></el-table-column>
+                </el-table>
+            </el-dialog>
         </div>
         <el-table
             :data="records"
