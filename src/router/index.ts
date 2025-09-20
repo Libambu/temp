@@ -24,10 +24,6 @@ const routes: Array<RouteConfig> = [
         component: () => import( '../views/info/index.vue'),
       },
       {
-        path: '/home/category',
-        component: () => import( '../views/category/index.vue'),
-      },
-      {
         path: '/home/dish',
         component: () => import( '../views/dish/index.vue'),
       },

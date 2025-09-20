@@ -11,13 +11,17 @@
             <el-button type="primary" style="float: left" @click="dishQuary()">查询</el-button>
             <el-button type="primary" style="float: right" @click="addDish()">+ 添加菜品</el-button>
             <el-button type="primary" style="float: right" @click="dialogTableVisible = true">+ 添加分类</el-button>
-            <el-dialog title="收货地址" :visible.sync="dialogTableVisible" :append-to-body="true">
-                <h3>添加分类</h3>
+            <el-dialog title="新建分类" :visible.sync="dialogTableVisible" :append-to-body="true" center>
+                <lable>分类名: </lable>
                 <el-input
                     placeholder="请输入内容"
-                    v-model="input"
+                    v-model="newCategory"
                     clearable>
                 </el-input>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogTableVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="createCategory(newCategory)">确 定</el-button>
+                </span>
             </el-dialog>
         </div>
         <el-table
@@ -94,6 +98,7 @@
         name: "dishView",
         data(){
             return{
+                newCategory: '',
                 dialogTableVisible: false,
                 name:'',//菜品名称
                 page:1,//页码
@@ -150,10 +155,11 @@
                             'adminToken': localStorage.getItem('adminToken'),
                         },
                         params:{
-                            status:p.status
+                            status:p.status,
+                            foodId:row.foodId
                         }
                     }).then(res =>{
-                        if(res.data.code === 1){
+                        if(res.data.code === 200){
                             this.$message.success('已修改')
                             this.dishQuary()
                         }else{
@@ -168,11 +174,32 @@
             addDish(){
                 this.$router.push('/home/dish/dishInfo')
             },
-            changeDish(){
+            changeDish(row){
                 this.$router.push({
                     path: '/home/dish/dishInfo',
-                    query: {'adminToken': localStorage.getItem('adminToken')}
+                    query: {'adminToken': localStorage.getItem('adminToken'),
+                            'id':row.foodId}
                 })
+            },
+            //添加分类
+            createCategory(){
+                axios.post('/elm/admin/category/',null,{
+                        headers:{
+                            'adminToken': localStorage.getItem('adminToken'),
+                        },
+                        params:{
+                            categoryName: this.newCategory
+                        }
+                    }).then(res =>{
+                        if(res.data.code === 1){
+                            this.$message.success('已修改')
+                            this.dialogTableVisible=false
+                        }else{
+                            this.$message.info('修改失败')
+                        }
+                    }).catch(err =>{
+                        console.log(err);
+                    })
             }
         }
     }

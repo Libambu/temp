@@ -23,20 +23,20 @@
         <el-select v-model="ruleForm.category" filterable placeholder="请输入关键词" style="width: 675px;">
           <el-option 
             v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            :key="item.name"
+            :label="item.name"
+            :value="item.id">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="菜品定价" prop="price">
         <el-input v-model="ruleForm.price"></el-input>
       </el-form-item>
-      <el-form-item label="商品状态" prop="status">
-        <el-radio-group v-model="ruleForm.status">
-          <el-radio label="启用"></el-radio>
-          <el-radio label="禁用"></el-radio>
-        </el-radio-group>
+      <el-form-item label="菜品介绍" prop="explain">
+        <el-input v-model="ruleForm.explain"></el-input>
+      </el-form-item>
+      <el-form-item label="备注" prop="remarks">
+        <el-input v-model="ruleForm.remarks"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -54,28 +54,14 @@
     data() {
       return {
         optType:'',
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
+        options: [],
         ruleForm: {
           name: '',
           picture: '',
           category: '',
           price: '',
-          status:''
+          explain:'',
+          remarks:''
         },
         rules: {
           name: [
@@ -91,8 +77,8 @@
           price: [
             { required: true, message: '请输入价格', trigger: 'blur' }
           ],
-          status: [
-            { required: true, message: '请选择商品状态', trigger: 'blur' }
+          explain: [
+            { required: true, message: '请输入商品介绍', trigger: 'blur' }
           ],
         }
       };
@@ -100,15 +86,20 @@
     created() {
       this.optType = this.$router.query.adminToken ? 'update' : 'add'
       if(this.optType == 'update'){
-        axios.get('/elm/admin/category',{
+        axios.get('/elm/admin/dish',{
           header:{
-            'adminToken': this.$router.query.adminToken
+            'adminToken': this.$router.query.adminToken,
+          },
+          params:{
+            'id': this.$router.query.id
           }
         }).then(res =>{
-          this.ruleForm.name = res.data.dish.name,
-          this.ruleForm.picture = res.data.dish.picture,
-          this.ruleForm.category = res.data.dish.category,
-          this.ruleForm.price = res.data.dish.price
+          this.ruleForm.name = res.data.dish.foodName,
+          this.ruleForm.picture = res.data.dish.foodImg,
+          this.ruleForm.category = res.data.dish.categoryName,
+          this.ruleForm.price = res.data.dish.foodPrice,
+          this.ruleForm.explain = res.data.dish.foodExplain,
+          this.ruleForm.remarks = res.data.dish.remarks
         }).catch(err =>{
           console.log(err);
         })
@@ -118,7 +109,8 @@
           'adminToken': localStorage.getItem('adminToken')
         }
       }).then(res =>{
-        this.options = res.data.category.names
+        this.options.name = res.data.data.categoryName
+        this.options.id = res.data.data.categoryID
         console.log(res.data);
       }).catch(err =>{
         console.log(err);
@@ -133,19 +125,17 @@
               cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
-              if(this.ruleForm.status == '启用') 
-                {const status = 1;
-              }else{
-                const status = 0;
-              }
               axios.post('/elm/admin/dish/',null,{
                 headers:{
                   'adminToken': localStorage.getItem('adminToken'),
-                  name: this.ruleForm.name,
-                  picture: this.ruleForm.picture,
-                  category: this.ruleForm.category,
-                  price: this.ruleForm.price,
-                  status: this.status
+                },
+                params:{
+                  foodName: this.ruleForm.name,
+                  foodImg: this.ruleForm.picture,
+                  categoryID: this.ruleForm.category,
+                  foodPrice: this.ruleForm.price,
+                  foodExplain:this.ruleForm.explain,
+                  remarks:this.ruleForm.remarks
                 }
               }).then(res =>{
                 if(res.data.code === 1){
@@ -179,7 +169,7 @@
 .title{
     background-color: #4ea3e9;
     color: #fff;
-    height: 100px;
+    height: 70px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     align-content: center;

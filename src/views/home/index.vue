@@ -15,7 +15,6 @@
       <el-aside class="side-bar" >
         <router-link to="/home/info" class="nav-item el-icon-user" active-class="active"> 我的信息</router-link>
         <router-link to="/home/dish" class="nav-item el-icon-dish" active-class="active"> 菜品管理</router-link>
-        <router-link to="/home/category" class="nav-item el-icon-menu" active-class="active"> 分类管理</router-link>
         <router-link to="/home/order" class="nav-item el-icon-s-order" active-class="active"> 订单管理</router-link>
         <router-link to="/home/statistics" class="nav-item el-icon-s-data" active-class="active"> 数据统计</router-link>
 
