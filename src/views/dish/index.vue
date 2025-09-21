@@ -45,7 +45,7 @@
             </el-table-column>
             <el-table-column
                 prop="foodImg"
-                label="图片"
+                label="菜品图片"
                 width="100">
                 <template slot-scope="scope">
                     <img :src="scope.row.foodImg" min-width="70" height="70"/>
@@ -53,13 +53,13 @@
             </el-table-column>
             <el-table-column
                 prop="foodName"
-                label="名称"
+                label="菜品名称"
                 width="200" >
             </el-table-column>
             <el-table-column
                 prop="categoryName"
-                label="类别"
-                width="150">
+                label="菜品类别"
+                width="100">
             </el-table-column>
             <el-table-column
                 prop="foodPrice"
@@ -76,17 +76,23 @@
             </el-table-column>
             <el-table-column
                 prop="foodExplain"
-                label="商品介绍"
-                width="100" >
+                label="菜品介绍"
+                width="200" >
             </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column
+                prop="remarks"
+                label="备注" >
+            </el-table-column>
+            <el-table-column 
+                label="操作" 
+                fixed="right"
+                width="100">
                 <template slot-scope="scope">
                     <el-button type="text" @click="changeDish(scope.row)">编辑</el-button>
                     <el-button type="text" @click="changeStatus(scope.row)">{{ scope.row.status == 0 ? '启用' : '禁用' }}</el-button>
                 </template>
             </el-table-column>
         </el-table>
-        
         <el-pagination
             style="padding: 10px;"
             @size-change="handleSizeChange"
@@ -216,11 +222,11 @@
                         categoryName: this.newCategory
                     }
                 }).then(res =>{
-                    if(res.data.code == 200){
-                        this.$message.success('已修改')
+                    if(res.data.code == 1){
+                        this.$message.success('添加成功')
                         this.dialogTableVisible=false
                     }else{
-                        this.$message.info('修改失败')
+                        this.$message.info('添加失败')
                     }
                 }).catch(err =>{
                     console.log(err);

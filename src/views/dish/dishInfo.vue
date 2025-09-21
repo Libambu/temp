@@ -40,6 +40,7 @@
         <el-input v-model="ruleForm.remarks"></el-input>
       </el-form-item>
       <el-form-item>
+        <el-button type="danger" :disabled="optType == 'add'" @click="deleteDish()" >删除菜品</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
         <el-button type="primary" @click="resetForm('ruleForm')">重置</el-button>
         <el-button type="primary" @click="reback()">返回</el-button>
@@ -143,9 +144,9 @@
                 }else{
                   this.$message.info('操作失败')
                 }
-                }).catch(err =>{
-                  console.log(err);
-                })
+              }).catch(err =>{
+                console.log(err);
+              })
             })
           } else {
             console.log('error submit!!');
@@ -159,6 +160,31 @@
       },
       reback(){
         this.$router.push('/home/dish')
+      },
+      deleteDish(){
+        this.$confirm('是否确认删除该菜品？','提示',{
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(()=>{
+            axios.post('/elm/admin/dish',{
+              headers:{
+                'adminToken': localStorage.getItem('adminToken'),
+              },
+              params:{
+                'id': this.$route.query.id,
+              }
+            }).then(res =>{
+              if(res.data.code === 1){
+                this.$message.success('操作成功')
+                this.dishQuary()
+              }else{
+                this.$message.info('操作失败')
+              }
+            }).catch(err =>{
+              console.log(err);
+            })
+        })
       }
     }
   }
