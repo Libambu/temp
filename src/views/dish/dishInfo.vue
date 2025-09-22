@@ -8,17 +8,7 @@
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
       <el-form-item label="菜品图片" prop="picture">
-        <el-upload
-          class="upload-demo"
-          v-model="ruleForm.picture"
-          drag
-          show-file-list:true
-          action="https://jsonplaceholder.typicode.com/posts/"
-          multiple>
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
+        <input type="file" @change="onFileChange" accept="image/png, image/jpeg" />
       </el-form-item>
       <el-form-item label="菜品分类" prop="category">
         <el-select v-model="ruleForm.category" filterable placeholder="请输入关键词"  style="width: 675px;">
@@ -60,7 +50,7 @@
         ruleForm: {
           id:'',
           name: '',
-          picture: '',
+          picture: null,
           category: '',
           price: '',
           explain:'',
@@ -100,7 +90,7 @@
         }).then(res =>{
           this.ruleForm.id = res.data.data.foodId,
           this.ruleForm.name = res.data.data.foodName,
-          this.ruleForm.picture = res.data.data.foodImg,
+          //this.ruleForm.picture = res.data.data.foodImg,
           this.ruleForm.category = res.data.data.categoryName,
           this.ruleForm.price = res.data.data.foodPrice,
           this.ruleForm.explain = res.data.data.foodExplain,
@@ -121,6 +111,11 @@
       })
     },
     methods: {
+
+    onFileChange(e) {
+      this.ruleForm.picture = e.target.files[0];
+    },
+
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -129,19 +124,21 @@
               cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
-              axios.post('/elm/admin/dish/add',null,{
+
+              const formData = new FormData();
+              formData.append('foodId', this.ruleForm.id);
+              formData.append('foodName', this.ruleForm.name);
+              formData.append('foodImg', this.ruleForm.picture); // 文件字段
+              formData.append('categoryId', this.ruleForm.category);
+              formData.append('foodPrice', this.ruleForm.price);
+              formData.append('foodExplain', this.ruleForm.explain);
+              formData.append('remarks', this.ruleForm.remarks);
+
+              axios.post('/elm/admin/dish/add',formData,
+              {
                 headers:{
                   'adminToken': localStorage.getItem('adminToken'),
                 },
-                params:{
-                  foodId:this.ruleForm.id,
-                  foodName: this.ruleForm.name,
-                  foodImg: this.ruleForm.picture,
-                  categoryID: this.ruleForm.category,
-                  foodPrice: this.ruleForm.price,
-                  foodExplain:this.ruleForm.explain,
-                  remarks:this.ruleForm.remarks
-                }
               }).then(res =>{
                 if(res.data.code === 200){
                   this.$message.success('操作成功')
