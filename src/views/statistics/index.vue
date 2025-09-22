@@ -29,72 +29,129 @@ export default {
   name: 'StatisticsIndex', // 多单词，ESLint 通过
   components: { VChart: () => import('vue-echarts') },
   data() {
+    const palette = ['#6D9EFF', '#A5D9FF', '#FFD6A5', '#FF9A9E', '#FECFEF', '#C7CEEA']
     return {
-      option: {
-        title: { text: '近 10 天营销量', left: 'center' },
-        tooltip: { trigger: 'axis' },
-        xAxis: { type: 'category', data: [] },
-        yAxis: { type: 'value', name: '个数' ,interval: 1, minInterval: 1},
-        series: [
-          {
-            name: '营收',
-            type: 'line',
-            smooth: true,
-            data: [],
-            emphasis: { focus: 'series' }
-          }
-        ]
+// 1. 近 10 天营销量（折线 + 面积）
+      option : {
+        backgroundColor: 'transparent',
+        textStyle: { fontFamily: 'MiSans, sans-serif', color: '#414a5a' },
+        title: { text: '近 10 天营销量', left: 'center', textStyle: { fontSize: 16, fontWeight: 'normal' } },
+        tooltip: { trigger: 'axis', backgroundColor: 'rgba(255,255,255,.95)', borderColor: '#ddd', borderWidth: 1, textStyle: { color: '#333' } },
+        grid: { left: 50, right: 30, top: 60, bottom: 50 },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: [],
+          axisLine: { lineStyle: { color: '#e5e5e5' } },
+          axisLabel: { color: '#777' }
+        },
+        yAxis: {
+          type: 'value',
+          name: '个数',
+          nameTextStyle: { color: '#777', padding: [0, 30, 0, 0] },
+          axisLine: { show: false },
+          splitLine: { lineStyle: { color: '#f2f2f2' } },
+          axisLabel: { color: '#777' }
+        },
+        series: [{
+          name: '营收',
+          type: 'line',
+          smooth: true,
+          symbol: 'circle',
+          symbolSize: 8,
+          itemStyle: { color: palette[0] },
+          lineStyle: { width: 3, shadowColor: 'rgba(109,158,255,.3)', shadowBlur: 10 },
+          areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(109,158,255,.25)' }, { offset: 1, color: 'rgba(109,158,255,0)' }]) },
+          emphasis: { focus: 'series' },
+          data: []
+        }]
       },
+
       option2: {
-        title: { text: '近 10 天销售额', left: 'center' },
-        tooltip: { trigger: 'axis' },
-        xAxis: { type: 'category', data: [] },
-        yAxis: { type: 'value', name: '金额（元）' },
-        series: [
-          {
-            name: '销售额',
-            type: 'line',
-            smooth: true,
-            data: [],
-            emphasis: { focus: 'series' }
-          }
-        ]
+        backgroundColor: 'transparent',
+        textStyle: { fontFamily: 'MiSans, sans-serif', color: '#414a5a' },
+        title: { text: '近 10 天销售额', left: 'center', textStyle: { fontSize: 16, fontWeight: 'normal' } },
+        tooltip: { trigger: 'axis', backgroundColor: 'rgba(255,255,255,.95)', borderColor: '#ddd', borderWidth: 1, textStyle: { color: '#333' } },
+        grid: { left: 50, right: 30, top: 60, bottom: 50 },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: [],
+          axisLine: { lineStyle: { color: '#e5e5e5' } },
+          axisLabel: { color: '#777' }
+        },
+        yAxis: {
+          type: 'value',
+          name: '金额（元）',
+          nameTextStyle: { color: '#777', padding: [0, 30, 0, 0] },
+          axisLine: { show: false },
+          splitLine: { lineStyle: { color: '#f2f2f2' } },
+          axisLabel: { color: '#777' }
+        },
+        series: [{
+          name: '营收',
+          type: 'line',
+          smooth: true,
+          symbol: 'circle',
+          symbolSize: 8,
+          itemStyle: { color: palette[0] },
+          lineStyle: { width: 3, shadowColor: 'rgba(109,158,255,.3)', shadowBlur: 10 },
+          areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(109,158,255,.25)' }, { offset: 1, color: 'rgba(109,158,255,0)' }]) },
+          emphasis: { focus: 'series' },
+          data: []
+        }]
       },
       option3: {
-        title: { text: '食品top10', left: 'center' },
-        tooltip: { trigger: 'axis' },
-        xAxis: { type: 'category', data: [] },
-        yAxis: { type: 'value', name: '销售量',interval: 1, minInterval: 1},
-        series: [
-          {
-            name: '销售额',
-            type: 'bar',
-            smooth: true,
-            data: [],
-            emphasis: { focus: 'series' }
-          }
-        ]
+        backgroundColor: 'transparent',
+        textStyle: { fontFamily: 'MiSans, sans-serif', color: '#414a5a' },
+        title: { text: '食品 Top10', left: 'center', textStyle: { fontSize: 16, fontWeight: 'normal' } },
+        tooltip: { trigger: 'axis', backgroundColor: 'rgba(255,255,255,.95)', borderColor: '#ddd', textStyle: { color: '#333' } },
+        grid: { left: 50, right: 30, top: 60, bottom: 50 },
+        xAxis: {
+          type: 'category',
+          data: [],
+          axisLine: { lineStyle: { color: '#e5e5e5' } },
+          axisLabel: { rotate: 20, color: '#777' }
+        },
+        yAxis: {
+          type: 'value',
+          name: '销售量',
+          nameTextStyle: { color: '#777', padding: [0, 30, 0, 0] },
+          axisLine: { show: false },
+          splitLine: { lineStyle: { color: '#f2f2f2' } },
+          axisLabel: { color: '#777' }
+        },
+        series: [{
+          name: '销售量',
+          type: 'bar',
+          barWidth: '60%',
+          itemStyle: {
+            borderRadius: [6, 6, 0, 0],
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: palette[2] }, { offset: 1, color: palette[3] }])
+          },
+          label: { show: true, position: 'top', color: '#666', fontSize: 12 },
+          data: []
+        }]
       },
 
       option4: {
-        title: { text: '菜品销量占比', left: 'center' },
-        tooltip: { trigger: 'item', formatter: '{a} <br/>{b}: {c} ({d}%)' },
-        legend: { orient: 'vertical', left: 'left' },
-        series: [
-          {
-            name: '销量',
-            type: 'pie',
-            radius: '50%',
-            data: [], // 稍后填充
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
-            }
-          }
-        ]
+        backgroundColor: 'transparent',
+        textStyle: { fontFamily: 'MiSans, sans-serif', color: '#414a5a' },
+        title: { text: '菜品销量占比', left: 'center', textStyle: { fontSize: 16, fontWeight: 'normal' } },
+        tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)', backgroundColor: 'rgba(255,255,255,.95)', borderColor: '#ddd', textStyle: { color: '#333' } },
+        legend: { orient: 'vertical', left: 'left', top: 'center', textStyle: { color: '#777' } },
+        series: [{
+          name: '销量',
+          type: 'pie',
+          radius: ['30%', '80%'],
+          center: ['55%', '50%'],
+          avoidLabelOverlap: true,
+          itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 },
+          label: { show: true, formatter: '{b}占比{d}%', fontSize: 12, color: '#666' },
+          emphasis: { label: { show: true, fontSize: 14, fontWeight: 'bold' } },
+          color: palette,
+          data: []
+        }]
       }
     }
   },
@@ -212,4 +269,6 @@ export default {
     grid-column: 2;
     grid-row: 2;
   }
+
+
 </style>
