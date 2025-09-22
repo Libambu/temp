@@ -16,7 +16,16 @@
             </el-menu>
         </div>
         <div class="body">
-            <el-table :data="records" stripe border show-summary height="620px" >
+            <el-table :data="records" stripe show-summary height="620px" >
+                <el-table-column type="expand">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                        <el-form-item label="商品名称">
+                            <span>{{ props.row.name }}</span>
+                        </el-form-item>
+                        </el-form>
+                    </template>
+                </el-table-column>
                 <el-table-column
                     label="序号"
                     type="index"
@@ -38,14 +47,13 @@
                     width="150">
                 </el-table-column>
                 <el-table-column
-                    label="送货地址"
-                    prop="addr"
-                    width="300">
-                </el-table-column>
-                <el-table-column
                     label="订单状态"
                     prop="deliveryStatus"
                     width="100">
+                </el-table-column>
+                <el-table-column
+                    label="所含菜品"
+                    prop="foodName">
                 </el-table-column>
                 <el-table-column 
                     label="操作" 
@@ -92,7 +100,7 @@
         },
         methods:{
             orderQuary(){
-                axios.post('/elm/admin/order',{
+                axios.post('/elm/admin/order/page',{
                     headers:{
                         'adminToken': localStorage.getItem('adminToken')
                     },

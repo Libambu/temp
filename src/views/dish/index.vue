@@ -127,7 +127,7 @@
         },
         created(){
             this.dishQuary()
-            axios.get('/elm/admin/category',{
+            axios.get('/elm/admin/category/getInfo',{
                 headers:{
                     'adminToken': localStorage.getItem('adminToken')
                 }
@@ -141,7 +141,7 @@
         methods:{
             //查询菜品
             dishQuary(){
-                axios.get('/elm/admin/dish/page',{
+                axios.get('/elm/admin/dish/getInfo',{
                     headers:{
                         'adminToken': localStorage.getItem('adminToken'),
                     },
@@ -179,7 +179,7 @@
                     const p ={
                         status : !row.status ? 1:0
                     }
-                    axios.post('/elm/admin/dish/',null,{
+                    axios.post('/elm/admin/dish/statusChange',null,{
                         headers:{
                             'adminToken': localStorage.getItem('adminToken'),
                         },
@@ -214,7 +214,7 @@
             },
             //添加分类
             createCategory(){
-                axios.post('/elm/admin/category/',null,{
+                axios.post('/elm/admin/category/add',null,{
                     headers:{
                         'adminToken': localStorage.getItem('adminToken'),
                     },
@@ -237,7 +237,7 @@
                 if(!this.category){
                     this.$message.warning('操作失败，分类不能为空！')
                 }else{
-                    axios.post('/elm/admin/category',{
+                    axios.post('/elm/admin/category/delete',{
                         headers:{
                             'adminToken': localStorage.getItem('adminToken'),
                         },

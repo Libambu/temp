@@ -41,7 +41,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="danger" :disabled="optType == 'add'" @click="deleteDish()" >删除菜品</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">{{optType == 'add'? '立即创建':'立即修改'}}</el-button>
         <el-button type="primary" @click="resetForm('ruleForm')">重置</el-button>
         <el-button type="primary" @click="reback()">返回</el-button>
       </el-form-item>
@@ -55,9 +55,10 @@
   export default {
     data() {
       return {
-        optType:'',
+        optType:'add',
         options: [],
         ruleForm: {
+          id:'',
           name: '',
           picture: '',
           category: '',
@@ -85,9 +86,11 @@
       };
     },
     created() {
+      
       this.optType = this.$route.query.id ? 'update' : 'add'
+      alert(this.optType)
       if(this.optType === 'update'){
-        axios.get('/elm/admin/dish',{
+        axios.get('/elm/admin/dish/getInfo',{
           headers:{
             'adminToken': localStorage.getItem('adminToken')
           },
@@ -95,6 +98,7 @@
             'id': this.$route.query.id
           }
         }).then(res =>{
+          this.ruleForm.id = res.data.data.foodId,
           this.ruleForm.name = res.data.data.foodName,
           this.ruleForm.picture = res.data.data.foodImg,
           this.ruleForm.category = res.data.data.categoryName,
@@ -105,7 +109,7 @@
           console.log(err);
         })
       }
-      axios.get('/elm/admin/category',{
+      axios.get('/elm/admin/category/getInfo',{
         headers:{
           'adminToken': localStorage.getItem('adminToken')
         }
@@ -125,11 +129,12 @@
               cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
-              axios.post('/elm/admin/dish/',null,{
+              axios.post('/elm/admin/dish/add',null,{
                 headers:{
                   'adminToken': localStorage.getItem('adminToken'),
                 },
                 params:{
+                  foodId:this.ruleForm.id,
                   foodName: this.ruleForm.name,
                   foodImg: this.ruleForm.picture,
                   categoryID: this.ruleForm.category,
@@ -167,7 +172,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(()=>{
-            axios.post('/elm/admin/dish',{
+            axios.post('/elm/admin/dish/delete',{
               headers:{
                 'adminToken': localStorage.getItem('adminToken'),
               },
