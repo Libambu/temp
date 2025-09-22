@@ -90,7 +90,7 @@
       this.optType = this.$route.query.id ? 'update' : 'add'
       alert(this.optType)
       if(this.optType === 'update'){
-        axios.get('/elm/admin/dish/getInfo',{
+        axios.get('/elm/admin/dish/getDish',{
           headers:{
             'adminToken': localStorage.getItem('adminToken')
           },
@@ -143,7 +143,7 @@
                   remarks:this.ruleForm.remarks
                 }
               }).then(res =>{
-                if(res.data.code === 1){
+                if(res.data.code === 200){
                   this.$message.success('操作成功')
                   this.dishQuary()
                 }else{
@@ -172,7 +172,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(()=>{
-            axios.post('/elm/admin/dish/delete',{
+            axios.post('/elm/admin/dish/delete',null,{
               headers:{
                 'adminToken': localStorage.getItem('adminToken'),
               },
@@ -180,7 +180,7 @@
                 'id': this.$route.query.id,
               }
             }).then(res =>{
-              if(res.data.code === 1){
+              if(res.data.code === 200){
                 this.$message.success('操作成功')
                 this.dishQuary()
               }else{

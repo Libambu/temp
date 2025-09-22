@@ -126,17 +126,8 @@
             }
         },
         created(){
-            this.dishQuary()
-            axios.get('/elm/admin/category/getInfo',{
-                headers:{
-                    'adminToken': localStorage.getItem('adminToken')
-                }
-            }).then(res =>{
-                this.options=res.data.data
-                console.log(res.data);
-            }).catch(err =>{
-                console.log(err);
-            })
+            this.dishQuary(),
+            this.categoryQuary()
         },
         methods:{
             //查询菜品
@@ -212,6 +203,18 @@
                     }
                 })
             },
+            categoryQuary(){
+                axios.get('/elm/admin/category/getInfo',{
+                    headers:{
+                        'adminToken': localStorage.getItem('adminToken')
+                    }
+                }).then(res =>{
+                    this.options=res.data.data
+                    console.log(res.data);
+                }).catch(err =>{
+                    console.log(err);
+                })
+            },
             //添加分类
             createCategory(){
                 axios.post('/elm/admin/category/add',null,{
@@ -222,9 +225,11 @@
                         categoryName: this.newCategory
                     }
                 }).then(res =>{
-                    if(res.data.code == 1){
+                    if(res.data.code == 200){
                         this.$message.success('添加成功')
                         this.dialogTableVisible=false
+                    }else if(res.data.code == 400){
+                        this.$message.warning('删除失败，分类下存在菜品')
                     }else{
                         this.$message.info('添加失败')
                     }
@@ -237,17 +242,18 @@
                 if(!this.category){
                     this.$message.warning('操作失败，分类不能为空！')
                 }else{
-                    axios.post('/elm/admin/category/delete',{
+                    axios.post('/elm/admin/category/delete',null,{
                         headers:{
                             'adminToken': localStorage.getItem('adminToken'),
                         },
                         params:{
-                            categoryName:this.category
+                            categoryId:this.category
                         }
                     }).then(res =>{
                         if(res.data.code == 200){
                             this.$message.success('删除成功')
                             this.dialogTableVisible=false
+                            this.categoryQuary()
                         }else{
                             this.$message.info('删除失败')
                         }

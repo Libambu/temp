@@ -20,8 +20,14 @@
                 <el-table-column type="expand">
                     <template slot-scope="props">
                         <el-form label-position="left" inline class="demo-table-expand">
-                        <el-form-item label="商品名称">
-                            <span>{{ props.row.name }}</span>
+                        <el-form-item label="订单编号">
+                            <span>{{ props.row.orderId}}</span>
+                        </el-form-item>
+                        <el-form-item label="用户编号">
+                            <span>{{ props.row.userId}}</span>
+                        </el-form-item>
+                        <el-form-item label="商家编号">
+                            <span>{{ props.row.businessId}}</span>
                         </el-form-item>
                         </el-form>
                     </template>
@@ -60,8 +66,7 @@
                     fixed="right"
                     width="100">
                     <template slot-scope="scope">
-                        <el-button type="text" @click="changeDish(scope.row)">编辑</el-button>
-                        <el-button type="text" @click="changeStatus(scope.row)">{{ scope.row.status == 0 ? '启用' : '禁用' }}</el-button>
+                        <el-button type="danger" @click="deleteOrder(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -89,7 +94,7 @@
         data(){
             return{
                 orderType:'1',//订单状态
-                records:[],//订单集合
+                records:[1],//订单集合
                 page:1,//页码
                 pageSize:10,//每页订单数
                 total:0,//总订单数
@@ -100,7 +105,7 @@
         },
         methods:{
             orderQuary(){
-                axios.post('/elm/admin/order/page',{
+                axios.post('/elm/admin/order/getInfo',{
                     headers:{
                         'adminToken': localStorage.getItem('adminToken')
                     },
