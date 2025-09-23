@@ -32,7 +32,7 @@
                             <el-form-item label="预计送达时间:">
                                 <span>{{ props.row.estimatedDeliveryTime}}</span>
                             </el-form-item>
-                            <el-form-item label="拒绝原因:" :disabled="props.row.orderState == 5">
+                            <el-form-item label="拒绝原因:" :v-show="props.row.orderState == 4">
                                 <span>{{ props.row.rejectionReason}}</span>
                             </el-form-item>
                         </el-form>
@@ -113,13 +113,14 @@
         },
         methods:{
             orderQuary(){
-                axios.post('/elm/admin/order/getInfo',{
+                axios.get('/elm/admin/order/getInfo',{
+                    headers:{
+                        'adminToken': localStorage.getItem('adminToken')
+                    },
+                    params:{   
                         page:this.page,
                         pageSize:this.pageSize,
                         orderType:this.orderType
-                    },{
-                    headers:{
-                        'adminToken': localStorage.getItem('adminToken')
                     }
                 }).then(res=>{
                     this.total = res.data.data.total;
