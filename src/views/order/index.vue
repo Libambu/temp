@@ -155,16 +155,17 @@
             },
             //订单删除
             deleteOrder(row){
-                this.$comfirm('是否删除订单？','提示',{
+                this.$confirm('是否删除订单？','提示',{
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(()=>{
-                    axios.post('/elm/admin/order/delete',{
-                        orderId:row.orderId
-                    },{
+                    axios.post('/elm/admin/order/delete',null,{
                         headers:{
                             'adminToken': localStorage.getItem('adminToken'),
+                        },
+                        params:{
+                            orderId:row.orderId
                         }
                     }).then(res=>{
                         if(res.data.code == 200){
@@ -189,6 +190,7 @@
                 }).then(res=>{
                     if(res.data.code == 200){
                         this.$message.success('接单成功')
+                        this.orderQuary()
                     }else{
                         this.$message.info('接单失败')
                     }
@@ -227,6 +229,7 @@
                 }).then(res=>{
                     if(res.data.code == 200){
                         this.$message.success('已呼叫骑手')
+                        this.orderQuary()
                     }else{
                         this.$message.info('呼叫失败')
                     }
