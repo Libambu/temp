@@ -131,7 +131,9 @@
         },
         methods:{
             //查询菜品
-            dishQuary(){
+            dishQuary(page){
+                if(this.category == "0") this.category = '';
+                if(!page) this.page = 1;
                 axios.get('/elm/admin/dish/getInfo',{
                     headers:{
                         'adminToken': localStorage.getItem('adminToken'),
@@ -158,7 +160,7 @@
             //页面跳转
             handleCurrentChange(page){
                 this.page = page
-                this.dishQuary()
+                this.dishQuary(page)
             },
             //切换上架状态
             changeStatus(row){
@@ -181,7 +183,7 @@
                     }).then(res =>{
                         if(res.data.code == 200){
                             this.$message.success('已修改')
-                            this.dishQuary()
+                            this.dishQuary(this.page)
                         }else{
                             this.$message.info('修改失败')
                         }
@@ -203,6 +205,7 @@
                     }
                 })
             },
+            //查询分类
             categoryQuary(){
                 axios.get('/elm/admin/category/getInfo',{
                     headers:{
@@ -210,6 +213,12 @@
                     }
                 }).then(res =>{
                     this.options=res.data.data
+                    this.options.unshift({
+                        id:0,
+                        name:"全部",
+                        status:1,
+                        businessName:''
+                    })
                     console.log(res.data);
                 }).catch(err =>{
                     console.log(err);
@@ -228,6 +237,7 @@
                     if(res.data.code == 200){
                         this.$message.success('添加成功')
                         this.dialogTableVisible=false
+                        this.categoryQuary()
                     }else{
                         this.$message.info('添加失败')
                     }
@@ -237,7 +247,7 @@
             },
             //删除分类
             deleteCategory(){
-                if(!this.category){
+                if(!this.category || this.category=="0"){
                     this.$message.warning('操作失败，分类不能为空！')
                 }else{
                     axios.post('/elm/admin/category/delete',null,{
@@ -251,7 +261,7 @@
                         if(res.data.code == 200){
                             this.$message.success('删除成功')
                             this.dialogTableVisible=false
-                            this.categoryQuary()
+                            location.reload();
                         }else if(res.data.code == 400){
                             this.$message.warning('删除失败，分类下存在菜品')
                         }else{

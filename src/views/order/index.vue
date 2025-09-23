@@ -76,11 +76,11 @@
                 <el-table-column 
                     label="操作" 
                     fixed="right"
-                    width="180"
+                    width="200"
                     align="center">
                     <template slot-scope="scope">
-                        <el-button type="danger" v-show="scope.row.orderState!=1 && scope.row.orderState!=7" @click="deleteOrder(scope.row)">删除</el-button>
-                        <el-button type="primary" v-show="scope.row.orderState==7" @click="dishComplete(scope.row)">制作完成</el-button>
+                        <el-button type="danger" v-show="scope.row.orderState!=1 && scope.row.orderState!=7" @click="deleteOrder(scope.row)">删 除 </el-button>
+                        <el-button type="primary" v-show="scope.row.orderState==7" @click="dishComplete(scope.row)">完 成 </el-button>
                         <el-button type="primary" v-show="scope.row.orderState==1" @click="acceptOrder(scope.row)">接单</el-button>
                         <el-button type="danger" v-show="scope.row.orderState==1" @click="dialogTableVisible = true">拒接</el-button>
                         <el-dialog title="拒单原因" :visible.sync="dialogTableVisible" :append-to-body="true" center>
@@ -134,8 +134,9 @@
         },
         methods:{
             //订单查询
-            orderQuary(type){
-                if(type)this.orderType=type
+            orderQuary(type,page){
+                if(type)this.orderType=type;
+                if(!page) this.page = 1;
                 axios.get('/elm/admin/order/getInfo',{
                     headers:{
                         'adminToken': localStorage.getItem('adminToken')
@@ -152,6 +153,16 @@
                 }).catch(err =>{
                     console.log(err);
                 })
+            },
+            //切换页面大小
+            handleSizeChange(pageSize){
+                this.pageSize = pageSize
+                this.orderQuary()
+            },
+            //页面跳转
+            handleCurrentChange(page){
+                this.page = page
+                this.orderQuary(this.orderType,page)
             },
             //订单删除
             deleteOrder(row){
@@ -170,6 +181,7 @@
                     }).then(res=>{
                         if(res.data.code == 200){
                             this.$message.success('删除成功')
+                            this.orderQuary(this.orderType)
                         }else{
                             this.$message.info('删除失败')
                         }
@@ -190,7 +202,7 @@
                 }).then(res=>{
                     if(res.data.code == 200){
                         this.$message.success('接单成功')
-                        this.orderQuary()
+                        this.orderQuary(this.orderType)
                     }else{
                         this.$message.info('接单失败')
                     }
@@ -210,6 +222,7 @@
                 }).then(res=>{
                     if(res.data.code == 200){
                         this.$message.success('拒单成功')
+                        this.orderQuary(this.orderType)
                     }else{
                         this.$message.info('拒单失败')
                     }
@@ -229,7 +242,7 @@
                 }).then(res=>{
                     if(res.data.code == 200){
                         this.$message.success('已呼叫骑手')
-                        this.orderQuary()
+                        this.orderQuary(this.orderType)
                     }else{
                         this.$message.info('呼叫失败')
                     }
