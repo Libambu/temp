@@ -97,8 +97,8 @@
                     // 假设后端返回 { code: 200 } 表示成功
                     if(res.data.code === 200){
                         console.log(res.data);
-                        this.$store.commit('setBusinessName', res.data.data.businessName);
                         localStorage.setItem('adminToken', res.data.data.token);
+                        localStorage.setItem('BusinessName', res.data.data.businessName);
                         Cookies.set('adminToken', res.data.data.token, { expires: 7, path: '/' })
                         alert(store.state.businessName + '，欢迎您！');
                         this.$router.push('/home');

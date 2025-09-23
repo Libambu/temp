@@ -5,7 +5,7 @@
       <i class="el-icon-platform-eleme" style="font-size: 40px;margin-right: 10px;"></i>
       <div class="logo" style="font-size: 30px;float: left;">饱了吗商家管理端</div>
       <!--用户退出-->
-      <div style=";font-size: 20px;position:absolute;right:200px">{{ $store.state.businessName }}</div>
+      <div style=";font-size: 20px;position:absolute;right:200px">{{ localStorage.getItem('BusinessName') }}</div>
       <el-button type="text" @click="handleLogout" style="font-size: 25px;color: #fff;margin-left: auto;">退出登录</el-button>
     </el-header>
 
