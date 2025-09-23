@@ -8,11 +8,11 @@
                 background-color="#409EFF"
                 text-color="#fff"
                 active-text-color="#ffd04b">
-                <el-menu-item index="1" @click="orderQuary()">全部</el-menu-item>
-                <el-menu-item index="2" @click="orderQuary()">未接单</el-menu-item>
-                <el-menu-item index="3" @click="orderQuary()">待配送</el-menu-item>
-                <el-menu-item index="4" @click="orderQuary()">已完成</el-menu-item>
-                <el-menu-item index="5" @click="orderQuary()">已拒绝</el-menu-item>
+                <el-menu-item index="1" @click="orderQuary(1)">全部</el-menu-item>
+                <el-menu-item index="2" @click="orderQuary(2)">未接单</el-menu-item>
+                <el-menu-item index="3" @click="orderQuary(3)">制作中</el-menu-item>
+                <el-menu-item index="4" @click="orderQuary(4)">已完成</el-menu-item>
+                <el-menu-item index="5" @click="orderQuary(5)">已拒绝</el-menu-item>
             </el-menu>
         </div>
         <div class="body">
@@ -32,7 +32,7 @@
                             <el-form-item label="预计送达时间:">
                                 <span>{{ props.row.estimatedDeliveryTime}}</span>
                             </el-form-item>
-                            <el-form-item label="拒绝原因:" :v-show="props.row.orderState == 4">
+                            <el-form-item label="拒绝原因:" v-show="props.row.orderState == 4">
                                 <span>{{ props.row.rejectionReason}}</span>
                             </el-form-item>
                         </el-form>
@@ -60,8 +60,13 @@
                 </el-table-column>
                 <el-table-column
                     label="订单状态"
-                    prop="orderState"
                     width="100">
+                    <template slot-scope="scope">
+                        <el-tag type="primary" v-show="scope.row.orderState==1"> 未接单 </el-tag>
+                        <el-tag type="primary" v-show="scope.row.orderState==2"> 制作中 </el-tag>
+                        <el-tag type="success" v-show="scope.row.orderState==3"> 已完成 </el-tag>
+                        <el-tag type="danger" v-show="scope.row.orderState==4"> 已拒绝 </el-tag>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     label="所含菜品"
@@ -73,8 +78,20 @@
                     width="200">
                     <template slot-scope="scope">
                         <el-button type="danger" v-show="scope.row.orderState==3 || scope.row.orderState==4" @click="deleteOrder(scope.row)">删除</el-button>
-                        <el-button type="primary" @click="acceptOrder(scope.row)">接单</el-button>
-                        <el-button type="danger" @click="rejectOrder(scope.row)">拒接</el-button>
+                        <el-button type="primary" v-show="scope.row.orderState==2" @click="dishComplete(scope.row)">制作完成</el-button>
+                        <el-button type="primary" v-show="scope.row.orderState==1" @click="acceptOrder(scope.row)">接单</el-button>
+                        <el-button type="danger" v-show="scope.row.orderState==1" @click="dialogTableVisible = true">拒接</el-button>
+                        <el-dialog title="拒单原因" :visible.sync="dialogTableVisible" :append-to-body="true" center>
+                            <el-input
+                                placeholder="请输入拒单原因"
+                                v-model="rejectReason"
+                                clearable>
+                            </el-input>
+                            <span slot="footer" class="dialog-footer">
+                                <el-button @click="dialogTableVisible = false">取 消</el-button>
+                                <el-button type="primary" @click="rejectOrder(scope.row)">确 定</el-button>
+                            </span>
+                        </el-dialog>
                     </template>
                 </el-table-column>
             </el-table>
@@ -101,6 +118,8 @@
         name: 'orderView',
         data(){
             return{
+                dialogTableVisible:false,
+                rejectReason:'',//拒单原因
                 orderType:'1',//订单状态
                 records:[{orderState:1,orderId:1}],//订单集合
                 page:1,//页码
@@ -109,10 +128,12 @@
             }
         },
         created(){
-            this.orderQuary()
+            this.orderQuary('1')
         },
         methods:{
-            orderQuary(){
+            //订单查询
+            orderQuary(type){
+                if(type)this.orderType=type
                 axios.get('/elm/admin/order/getInfo',{
                     headers:{
                         'adminToken': localStorage.getItem('adminToken')
@@ -128,6 +149,80 @@
                     console.log(res.data);
                 }).catch(err =>{
                     console.log(err);
+                })
+            },
+            //订单删除
+            deleteOrder(row){
+                this.$comfirm('是否删除订单？','提示',{
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(()=>{
+                    axios.post('/elm/admin/order/delete',{
+                        orderId:row.orderId
+                    },{
+                        headers:{
+                            'adminToken': localStorage.getItem('adminToken'),
+                        }
+                    }).then(res=>{
+                        if(res.data.code == 200){
+                            this.$message.success('删除成功')
+                        }else{
+                            this.$message.info('删除失败')
+                        }
+                    })
+                })
+            },
+            //接单
+            acceptOrder(row){
+                axios.post('/elm/admin/order/accept',{
+                    orderId:row.orderId,
+                    orderState:2
+                },{
+                    headers:{
+                        'adminToken': localStorage.getItem('adminToken'),
+                    }
+                }).then(res=>{
+                    if(res.data.code == 200){
+                        this.$message.success('接单成功')
+                    }else{
+                        this.$message.info('接单失败')
+                    }
+                })
+            },
+            //拒单
+            rejectOrder(row){
+                axios.post('/elm/admin/order/reject',{
+                    orderId:row.orderId,
+                    rejectionReason:this.rejectReason,
+                    orderState:4
+                },{
+                    headers:{
+                        'adminToken': localStorage.getItem('adminToken'),
+                    }
+                }).then(res=>{
+                    if(res.data.code == 200){
+                        this.$message.success('拒单成功')
+                    }else{
+                        this.$message.info('拒单失败')
+                    }
+                })
+            },
+            //菜品制作完成，呼叫骑手配送
+            dishComplete(row){
+                axios.post('/elm/admin/order/complete',{
+                    orderId:row.orderId,
+                    orderState:3
+                },{
+                    headers:{
+                        'adminToken': localStorage.getItem('adminToken'),
+                    }
+                }).then(res=>{
+                    if(res.data.code == 200){
+                        this.$message.success('已呼叫骑手')
+                    }else{
+                        this.$message.info('呼叫失败')
+                    }
                 })
             }
         }
