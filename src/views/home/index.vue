@@ -5,7 +5,7 @@
       <i class="el-icon-platform-eleme" style="font-size: 40px;margin-right: 10px;"></i>
       <div class="logo" style="font-size: 30px;float: left;">饱了吗商家管理端</div>
       <!--用户退出-->
-      <div style="font-size: 20px;position:absolute;right:200px">{{ localStorage.getItem('BusinessName') }}</div>
+      <div style="font-size: 20px;position:absolute;right:200px">{{ businessName }}</div>
       <el-button type="text" @click="handleLogout" style="font-size: 25px;color: #fff;margin-left: auto;">退出登录</el-button>
     </el-header>
 
@@ -38,6 +38,11 @@ import Cookies from 'js-cookie';
 
 export default {
     name: 'HomeView',
+    data(){
+      return{
+        businessName : localStorage.getItem('BusinessName')
+      }
+    },
     mounted() {
     // 保险：强制浏览器重新计算布局
         this.$nextTick(() => {
