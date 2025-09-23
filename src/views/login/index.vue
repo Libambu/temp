@@ -100,7 +100,7 @@
                         localStorage.setItem('adminToken', res.data.data.token);
                         localStorage.setItem('BusinessName', res.data.data.businessName);
                         Cookies.set('adminToken', res.data.data.token, { expires: 7, path: '/' })
-                        alert(store.state.businessName + '，欢迎您！');
+                        alert(res.data.data.businessName + '，欢迎您！');
                         this.$router.push('/home');
                         
                     }else{
