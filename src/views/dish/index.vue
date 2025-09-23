@@ -120,7 +120,7 @@
                 page:1,//页码
                 pageSize:10,//每页菜品数
                 total:0,//总菜品数
-                records:[],//当前页菜品集合
+                records:[{foodId:1}],//当前页菜品集合
                 category:'',
                 options:[]//分类集合
             }
@@ -228,8 +228,6 @@
                     if(res.data.code == 200){
                         this.$message.success('添加成功')
                         this.dialogTableVisible=false
-                    }else if(res.data.code == 400){
-                        this.$message.warning('删除失败，分类下存在菜品')
                     }else{
                         this.$message.info('添加失败')
                     }
@@ -254,6 +252,8 @@
                             this.$message.success('删除成功')
                             this.dialogTableVisible=false
                             this.categoryQuary()
+                        }else if(res.data.code == 400){
+                            this.$message.warning('删除失败，分类下存在菜品')
                         }else{
                             this.$message.info('删除失败')
                         }
