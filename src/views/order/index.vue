@@ -46,7 +46,7 @@
                 <el-table-column
                     label="订单编号"
                     prop="orderId"
-                    width="200">
+                    width="100">
                 </el-table-column>
                 <el-table-column
                     label="创建日期"
@@ -56,16 +56,16 @@
                 <el-table-column
                     label="订单金额"
                     prop="orderTotal"
-                    width="150">
+                    width="100">
                 </el-table-column>
                 <el-table-column
                     label="订单状态"
                     width="100">
                     <template slot-scope="scope">
                         <el-tag type="primary" v-show="scope.row.orderState==1"> 未接单 </el-tag>
-                        <el-tag type="primary" v-show="scope.row.orderState==2"> 制作中 </el-tag>
-                        <el-tag type="success" v-show="scope.row.orderState==3"> 已完成 </el-tag>
-                        <el-tag type="danger" v-show="scope.row.orderState==4"> 已拒绝 </el-tag>
+                        <el-tag type="primary" v-show="scope.row.orderState==7"> 制作中 </el-tag>
+                        <el-tag type="success" v-show="scope.row.orderState==3 || scope.row.orderState==4 || scope.row.orderState==5"> 已完成 </el-tag>
+                        <el-tag type="danger" v-show="scope.row.orderState==2"> 已拒绝 </el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -121,7 +121,7 @@
                 dialogTableVisible:false,
                 rejectReason:'',//拒单原因
                 orderType:'1',//订单状态
-                records:[{orderState:1,orderId:1}],//订单集合
+                records:[],//订单集合
                 page:1,//页码
                 pageSize:10,//每页订单数
                 total:0,//总订单数
@@ -175,7 +175,7 @@
             },
             //接单
             acceptOrder(row){
-                axios.post('/elm/admin/order/accept',{
+                axios.post('/elm/admin/order/status',{
                     orderId:row.orderId,
                     orderState:7
                 },{
@@ -192,7 +192,7 @@
             },
             //拒单
             rejectOrder(row){
-                axios.post('/elm/admin/order/reject',{
+                axios.post('/elm/admin/order/status',{
                     orderId:row.orderId,
                     rejectionReason:this.rejectReason,
                     orderState:2
@@ -210,7 +210,7 @@
             },
             //菜品制作完成，呼叫骑手配送
             dishComplete(row){
-                axios.post('/elm/admin/order/complete',{
+                axios.post('/elm/admin/order/status',{
                     orderId:row.orderId,
                     orderState:3
                 },{
