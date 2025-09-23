@@ -24,10 +24,10 @@
                                 <span>{{ props.row.contactName}}</span>
                             </el-form-item>
                             <el-form-item label="用户联系方式:">
-                                <span>{{ props.row.contacttel}}</span>
+                                <span>{{ props.row.contactTel}}</span>
                             </el-form-item>
                             <el-form-item label="送货地址:">
-                                <span>{{ props.row.addr}}</span>
+                                <span>{{ props.row.address}}</span>
                             </el-form-item>
                             <el-form-item label="预计送达时间:">
                                 <span>{{ props.row.estimatedDeliveryTime}}</span>
