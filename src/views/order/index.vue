@@ -77,7 +77,7 @@
                     fixed="right"
                     width="200">
                     <template slot-scope="scope">
-                        <el-button type="danger" v-show="scope.row.orderState!=1 || scope.row.orderState!=7" @click="deleteOrder(scope.row)">删除</el-button>
+                        <el-button type="danger" v-show="scope.row.orderState!=1 && scope.row.orderState!=7" @click="deleteOrder(scope.row)">删除</el-button>
                         <el-button type="primary" v-show="scope.row.orderState==7" @click="dishComplete(scope.row)">制作完成</el-button>
                         <el-button type="primary" v-show="scope.row.orderState==1" @click="acceptOrder(scope.row)">接单</el-button>
                         <el-button type="danger" v-show="scope.row.orderState==1" @click="dialogTableVisible = true">拒接</el-button>
