@@ -8,11 +8,11 @@
                 background-color="#409EFF"
                 text-color="#fff"
                 active-text-color="#ffd04b">
-                <el-menu-item index="1" @click="orderQuary(1)">全部</el-menu-item>
-                <el-menu-item index="2" @click="orderQuary(2)">未接单</el-menu-item>
-                <el-menu-item index="3" @click="orderQuary(3)">制作中</el-menu-item>
-                <el-menu-item index="4" @click="orderQuary(4)">已完成</el-menu-item>
-                <el-menu-item index="5" @click="orderQuary(5)">已拒绝</el-menu-item>
+                <el-menu-item index="1" @click="orderQuary('1')">全部</el-menu-item>
+                <el-menu-item index="2" @click="orderQuary('2')">未接单</el-menu-item>
+                <el-menu-item index="3" @click="orderQuary('3')">制作中</el-menu-item>
+                <el-menu-item index="4" @click="orderQuary('4')">已完成</el-menu-item>
+                <el-menu-item index="5" @click="orderQuary('5')">已拒绝</el-menu-item>
             </el-menu>
         </div>
         <div class="body">
@@ -77,8 +77,8 @@
                     fixed="right"
                     width="200">
                     <template slot-scope="scope">
-                        <el-button type="danger" v-show="scope.row.orderState==3 || scope.row.orderState==4" @click="deleteOrder(scope.row)">删除</el-button>
-                        <el-button type="primary" v-show="scope.row.orderState==2" @click="dishComplete(scope.row)">制作完成</el-button>
+                        <el-button type="danger" v-show="scope.row.orderState!=1 || scope.row.orderState!=7" @click="deleteOrder(scope.row)">删除</el-button>
+                        <el-button type="primary" v-show="scope.row.orderState==7" @click="dishComplete(scope.row)">制作完成</el-button>
                         <el-button type="primary" v-show="scope.row.orderState==1" @click="acceptOrder(scope.row)">接单</el-button>
                         <el-button type="danger" v-show="scope.row.orderState==1" @click="dialogTableVisible = true">拒接</el-button>
                         <el-dialog title="拒单原因" :visible.sync="dialogTableVisible" :append-to-body="true" center>
@@ -177,7 +177,7 @@
             acceptOrder(row){
                 axios.post('/elm/admin/order/accept',{
                     orderId:row.orderId,
-                    orderState:2
+                    orderState:7
                 },{
                     headers:{
                         'adminToken': localStorage.getItem('adminToken'),
@@ -195,7 +195,7 @@
                 axios.post('/elm/admin/order/reject',{
                     orderId:row.orderId,
                     rejectionReason:this.rejectReason,
-                    orderState:4
+                    orderState:2
                 },{
                     headers:{
                         'adminToken': localStorage.getItem('adminToken'),
