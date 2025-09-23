@@ -16,7 +16,7 @@
             </el-menu>
         </div>
         <div class="body">
-            <el-table :data="records" stripe height="620px" width="100%" >
+            <el-table :data="records" stripe height="620px" width="100%" :default-sort="{prop: 'orderDate', order: 'descending'}">
                 <el-table-column type="expand">
                     <template slot-scope="props">
                         <el-form label-position="left" inline class="demo-table-expand">
@@ -32,7 +32,7 @@
                             <el-form-item label="预计送达时间:">
                                 <span>{{ props.row.estimatedDeliveryTime}}</span>
                             </el-form-item>
-                            <el-form-item label="拒绝原因:" v-show="props.row.orderState == 4">
+                            <el-form-item label="拒绝原因:" v-show="props.row.orderState == 2">
                                 <span>{{ props.row.rejectionReason}}</span>
                             </el-form-item>
                         </el-form>
@@ -51,7 +51,8 @@
                 <el-table-column
                     label="创建日期"
                     prop="orderDate"
-                    width="200">
+                    width="200"
+                    sortable>
                 </el-table-column>
                 <el-table-column
                     label="订单金额"
@@ -60,7 +61,7 @@
                 </el-table-column>
                 <el-table-column
                     label="订单状态"
-                    width="100">
+                    width="150">
                     <template slot-scope="scope">
                         <el-tag type="primary" v-show="scope.row.orderState==1"> 未接单 </el-tag>
                         <el-tag type="primary" v-show="scope.row.orderState==7"> 制作中 </el-tag>
@@ -75,7 +76,8 @@
                 <el-table-column 
                     label="操作" 
                     fixed="right"
-                    width="200">
+                    width="180"
+                    align="center">
                     <template slot-scope="scope">
                         <el-button type="danger" v-show="scope.row.orderState!=1 && scope.row.orderState!=7" @click="deleteOrder(scope.row)">删除</el-button>
                         <el-button type="primary" v-show="scope.row.orderState==7" @click="dishComplete(scope.row)">制作完成</el-button>
@@ -175,12 +177,14 @@
             },
             //接单
             acceptOrder(row){
-                axios.post('/elm/admin/order/status',{
-                    orderId:row.orderId,
-                    orderState:7
-                },{
+                axios.post('/elm/admin/order/status',null,{
                     headers:{
                         'adminToken': localStorage.getItem('adminToken'),
+                    },
+                    params:{
+                    orderId:row.orderId,
+                    orderState:7,
+                    rejectionReason:this.rejectReason
                     }
                 }).then(res=>{
                     if(res.data.code == 200){
@@ -192,13 +196,14 @@
             },
             //拒单
             rejectOrder(row){
-                axios.post('/elm/admin/order/status',{
-                    orderId:row.orderId,
-                    rejectionReason:this.rejectReason,
-                    orderState:2
-                },{
+                axios.post('/elm/admin/order/status',null,{
                     headers:{
                         'adminToken': localStorage.getItem('adminToken'),
+                    },
+                    params:{
+                    orderId:row.orderId,
+                    orderState:2,
+                    rejectionReason:this.rejectReason
                     }
                 }).then(res=>{
                     if(res.data.code == 200){
@@ -210,12 +215,14 @@
             },
             //菜品制作完成，呼叫骑手配送
             dishComplete(row){
-                axios.post('/elm/admin/order/status',{
-                    orderId:row.orderId,
-                    orderState:3
-                },{
+                axios.post('/elm/admin/order/status',null,{
                     headers:{
                         'adminToken': localStorage.getItem('adminToken'),
+                    },
+                    params:{
+                    orderId:row.orderId,
+                    orderState:3,
+                    rejectionReason:this.rejectReason
                     }
                 }).then(res=>{
                     if(res.data.code == 200){
