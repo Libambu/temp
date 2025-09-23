@@ -120,7 +120,7 @@
                 page:1,//页码
                 pageSize:10,//每页菜品数
                 total:0,//总菜品数
-                records:[{foodId:1}],//当前页菜品集合
+                records:[],//当前页菜品集合
                 category:'',
                 options:[]//分类集合
             }
