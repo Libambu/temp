@@ -158,7 +158,7 @@
         },
         created(){
             this.orderQuary('1'),
-            axios.get('/elm/admin/getRate',{
+            axios.get('/elm/admin/order/getRate',{
                 headers:{
                     'adminToken': localStorage.getItem('adminToken')
                 }
