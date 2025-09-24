@@ -232,7 +232,13 @@ export default {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     padding: 20px;
 }
-
+  .head{
+    height: 10%;
+    background-color: #409EFF;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    align-items: center;
+  }
   .statistics-index {
     padding: 20px;
   }
@@ -242,7 +248,8 @@ export default {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     gap: 3px;
-    height: 100%; /* 占满整个视口高度 */
+    height: 90%; /* 占满整个视口高度 */
+    padding-top: 20px;
   }
 
   .chart {

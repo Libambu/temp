@@ -5,7 +5,7 @@
       <i class="el-icon-platform-eleme" style="font-size: 40px;margin-right: 10px;"></i>
       <div class="logo" style="font-size: 30px;float: left;">饱了吗商家管理端</div>
       <!--用户退出-->
-      <div style="font-size: 20px;position:absolute;right:200px">{{ businessName }}</div>
+      <div style="font-size: 20px;position:absolute;right:180px;">欢迎您，{{ businessName }}</div>
       <el-button type="text" @click="handleLogout" style="font-size: 25px;color: #fff;margin-left: auto;">退出登录</el-button>
     </el-header>
 
@@ -51,20 +51,26 @@ export default {
     },
     methods: {
       handleLogout() {
-        axios({
-          method:'get',
-          url:'/elm/admin/Account/logout',
-          headers:{
-            'adminToken': localStorage.getItem('adminToken')
-          }
+        this.$confirm('确认退出？','提示',{
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(()=>{
+          axios({
+            method:'get',
+            url:'/elm/admin/Account/logout',
+            headers:{
+              'adminToken': localStorage.getItem('adminToken')
+            }
+          })
+          // 清除本地存储的 token
+          localStorage.removeItem('adminToken');
+          Cookies.remove('adminToken', { path: '/' });
+          // 清除 Vuex 中的用户信息
+          this.$store.commit('setBusinessName', '');
+          // 跳转到登录页面
+          this.$router.push('/login');
         })
-        // 清除本地存储的 token
-        localStorage.removeItem('adminToken');
-        Cookies.remove('adminToken', { path: '/' });
-        // 清除 Vuex 中的用户信息
-        this.$store.commit('setBusinessName', '');
-        // 跳转到登录页面
-        this.$router.push('/login');
       }
     }
 }

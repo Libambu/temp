@@ -13,6 +13,17 @@
                 <el-menu-item index="3" @click="orderQuary('3')">制作中</el-menu-item>
                 <el-menu-item index="4" @click="orderQuary('4')">已完成</el-menu-item>
                 <el-menu-item index="5" @click="orderQuary('5')">已拒绝</el-menu-item>
+                <el-menu-item index="4" @click="orderQuary('6')">已评价</el-menu-item>
+                <div class="rate">
+                    <label style="font-size: 22px;color: #fff;"> 总评分：</label>
+                    <el-rate
+                        v-model="totalRate"
+                        disabled
+                        show-score
+                        text-color="#ff9900"
+                        score-template="{value}">
+                    </el-rate>
+                </div>
             </el-menu>
         </div>
         <div class="body">
@@ -34,6 +45,19 @@
                             </el-form-item>
                             <el-form-item label="拒绝原因:" v-show="props.row.orderState == 2">
                                 <span>{{ props.row.rejectionReason}}</span>
+                            </el-form-item>
+                            <el-form-item label="顾客评论:" v-show="props.row.orderState == 5">
+                                <span>{{ props.row.commentText}}</span>
+                            </el-form-item>
+                            <el-form-item label="顾客评分:" v-show="props.row.orderState == 5">
+                                <el-rate
+                                    v-model="props.row.rating"
+                                    disabled
+                                    show-score
+                                    text-color="#ff9900"
+                                    score-template="{value}"
+                                    style="padding-top: 13px;">
+                                </el-rate>
                             </el-form-item>
                         </el-form>
                     </template>
@@ -65,8 +89,9 @@
                     <template slot-scope="scope">
                         <el-tag type="primary" v-show="scope.row.orderState==1"> 未接单 </el-tag>
                         <el-tag type="primary" v-show="scope.row.orderState==7"> 制作中 </el-tag>
-                        <el-tag type="success" v-show="scope.row.orderState==3 || scope.row.orderState==4 || scope.row.orderState==5"> 已完成 </el-tag>
+                        <el-tag type="success" v-show="scope.row.orderState==3 || scope.row.orderState==4"> 已完成 </el-tag>
                         <el-tag type="danger" v-show="scope.row.orderState==2"> 已拒绝 </el-tag>
+                        <el-tag type="success" v-show="scope.row.orderState==5 "> 已评价 </el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -120,6 +145,7 @@
         name: 'orderView',
         data(){
             return{
+                totalRate: '',
                 dialogTableVisible:false,
                 rejectReason:'',//拒单原因
                 orderType:'1',//订单状态
@@ -130,7 +156,17 @@
             }
         },
         created(){
-            this.orderQuary('1')
+            this.orderQuary('1'),
+            axios.get('/elm/admin/getRate',{
+                headers:{
+                    'adminToken': localStorage.getItem('adminToken')
+                }
+            }).then(res=>{
+                this.totalRate = res.data.totalRate;
+                console.log(res.data);
+            }).catch(err =>{
+                console.log(err);
+            })
         },
         methods:{
             //订单查询
@@ -271,5 +307,17 @@
 .demo-table-expand .el-form-item {
     margin-bottom: 0;
     width: 100%;
+}
+.rate{
+    display: flex;
+    width: 23%;
+    float: right;
+    padding-top: 15px;
+}
+/deep/ .el-rate__icon {
+    font-size: 30px;
+}
+/deep/ .el-rate__text{
+    font-size:20px
 }
 </style>
