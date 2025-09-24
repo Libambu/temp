@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <div class = "title"> 
-        <h1>菜品信息</h1>
+        <h3>菜品信息</h3>
     </div>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" style="padding:25px 300px;">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" style="padding:20px 300px;">
       <el-form-item label="菜品名称" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
@@ -11,7 +11,7 @@
         <input type="file" @change="onFileChange" accept="image/png, image/jpeg" />
       </el-form-item>
       <el-form-item label="菜品分类" prop="category">
-        <el-select v-model="ruleForm.category" filterable placeholder="请输入关键词"  style="width: 675px;">
+        <el-select v-model="ruleForm.category" filterable placeholder="请输入关键词"  style="width: 370px;">
           <el-option 
             v-for="item in options"
             :key="item.name"
@@ -195,14 +195,14 @@
 .title{
     background-color: #4ea3e9;
     color: #fff;
-    height: 70px;
+    height: 60px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     align-content: center;
 }
 .container{
     width: auto;
-    height: 750px;
+    height: 570px;
     background-color: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);

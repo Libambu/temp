@@ -12,7 +12,7 @@
     <!-- 下方主体区：左侧边栏 + 右侧内容 -->
     <el-container class="main-body">
       <!-- 左侧边栏 -->
-      <el-aside class="side-bar" >
+      <el-aside class="side-bar" style="width: 250px;">
         <router-link to="/home/info" class="nav-item el-icon-user" active-class="active"> 我的信息</router-link>
         <router-link to="/home/dish" class="nav-item el-icon-dish" active-class="active"> 菜品管理</router-link>
         <router-link to="/home/order" class="nav-item el-icon-s-order" active-class="active"> 订单管理</router-link>
@@ -79,7 +79,7 @@ export default {
 <style scoped>
 /* 整体布局 */
 .layout{
-  height: 950px;
+  height: 755px;
   min-width: 1400px;
   display: flex;
   flex-direction: column;
@@ -104,7 +104,7 @@ export default {
 
 /* 左侧边栏 */
 .side-bar {
-  width: 220px;
+  width: 150px;
   background: #2b333f;
   padding: 24px 0;
   overflow-y: auto;
@@ -116,7 +116,7 @@ export default {
 
 .nav-item {
   display: block;
-  line-height:100px;
+  line-height:80px;
   font-size: 20px;
   text-align: center;
   color: #cfd3dc;
@@ -137,16 +137,15 @@ export default {
 /* 右侧内容区 */
 .content {
   flex: 1;
-  padding: 24px;
   background: #f5f7fa;
   overflow: auto;
 }
 #main {
-  min-height: 700px;
+  min-height: 550px;
   background: #f5f7fa;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
-  padding: 24px;
+  padding: 20px;
 }
 
 </style>

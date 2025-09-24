@@ -206,7 +206,7 @@ a{
     max-width: 100vw;
     min-width: 70vh;
     margin:auto;
-    margin-top: 180px;
+    margin-top: 90px;
 }
 .form-container form{
     background-color: #fff;

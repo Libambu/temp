@@ -13,9 +13,9 @@
                 <el-menu-item index="3" @click="orderQuary('3')">制作中</el-menu-item>
                 <el-menu-item index="4" @click="orderQuary('4')">已完成</el-menu-item>
                 <el-menu-item index="5" @click="orderQuary('5')">已拒绝</el-menu-item>
-                <el-menu-item index="4" @click="orderQuary('6')">已评价</el-menu-item>
+                <el-menu-item index="6" @click="orderQuary('6')">已评价</el-menu-item>
                 <div class="rate">
-                    <label style="font-size: 22px;color: #fff;"> 总评分：</label>
+                    <label style="font-size: 17px;color: #fff;"> 总评分：</label>
                     <el-rate
                         v-model="totalRate"
                         disabled
@@ -27,8 +27,8 @@
             </el-menu>
         </div>
         <div class="body">
-            <el-table :data="records" stripe height="620px" width="100%" :default-sort="{prop: 'orderDate', order: 'descending'}">
-                <el-table-column type="expand">
+            <el-table :data="records" stripe height="450px" width="100%" :default-sort="{prop: 'orderDate', order: 'descending'}">
+                <el-table-column type="expand" width="30px">
                     <template slot-scope="props">
                         <el-form label-position="left" inline class="demo-table-expand">
                             <el-form-item label="用户姓名:">
@@ -70,22 +70,22 @@
                 <el-table-column
                     label="订单编号"
                     prop="orderId"
-                    width="100">
+                    width="80">
                 </el-table-column>
                 <el-table-column
                     label="创建日期"
                     prop="orderDate"
-                    width="200"
+                    width="175"
                     sortable>
                 </el-table-column>
                 <el-table-column
                     label="订单金额"
                     prop="orderTotal"
-                    width="100">
+                    width="80">
                 </el-table-column>
                 <el-table-column
                     label="订单状态"
-                    width="150">
+                    width="80">
                     <template slot-scope="scope">
                         <el-tag type="primary" v-show="scope.row.orderState==1"> 未接单 </el-tag>
                         <el-tag type="primary" v-show="scope.row.orderState==7"> 制作中 </el-tag>
@@ -96,6 +96,7 @@
                 </el-table-column>
                 <el-table-column
                     label="所含菜品"
+                    fit
                     prop="foodName">
                 </el-table-column>
                 <el-table-column 
@@ -290,11 +291,11 @@
 <style scoped>
 .container{
     width: auto;
-    height: 710px;
+    height: 555px;
     background-color: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-    padding: 20px;
+    padding: 10px;
 }
 .demo-table-expand {
     padding-left: 50px;
@@ -312,12 +313,6 @@
     display: flex;
     width: 23%;
     float: right;
-    padding-top: 15px;
-}
-/deep/ .el-rate__icon {
-    font-size: 30px;
-}
-/deep/ .el-rate__text{
-    font-size:20px
+    padding-top: 20px;
 }
 </style>

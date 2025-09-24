@@ -276,7 +276,7 @@ export default {
     backdrop-filter: blur(20px);
     border: 1px solid var(--line);
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   }
 
   h2 { text-align: center; margin: 1px 5px; font-size: 20px; font-weight: 600; color: var(--text1); letter-spacing: 0.5px; }

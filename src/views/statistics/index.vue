@@ -226,19 +226,12 @@ export default {
 
   .container{
     width: auto;
-    height: 710px;
+    height: 555px;
     background-color: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-    padding: 20px;
+    padding: 10px;
 }
-  .head{
-    height: 10%;
-    background-color: #409EFF;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-    align-items: center;
-  }
   .statistics-index {
     padding: 20px;
   }

@@ -5,11 +5,11 @@
             <el-input
                 v-model="name"
                 placeholder="请输入关键词"
-                style="margin-right: 10px; width: 20%; float: left;"
+                style="width: 20%; float: left;"
                 clearable
             />
-            <label style="float: left;margin-left: 50px; padding: 9px;">类别：</label>
-            <el-select v-model="category" filterable placeholder="请输入关键词"  style="margin-right: 10px; width: 20%; float: left;">
+            <label style="float: left;margin-left: 10px; padding: 9px;">类别：</label>
+            <el-select v-model="category" filterable placeholder="请输入关键词"  style="width: 20%; float: left;">
                 <el-option 
                     v-for="item in options"
                     :key="item.name"
@@ -37,7 +37,7 @@
         <el-table
             :data="records"
             stripe
-            height="640px">
+            height="85%">
             <el-table-column
                 label="序号"
                 type="index"
@@ -48,13 +48,13 @@
                 label="菜品图片"
                 width="100">
                 <template slot-scope="scope">
-                    <img :src="scope.row.foodImg" min-width="70" height="70"/>
+                    <img :src="scope.row.foodImg" width="80px" height="60px"/>
                 </template>
             </el-table-column>
             <el-table-column
                 prop="foodName"
                 label="菜品名称"
-                width="200" >
+                width="150" >
             </el-table-column>
             <el-table-column
                 prop="categoryName"
@@ -282,10 +282,10 @@
 }
 .container{
     width: auto;
-    height: 750px;
+    height: 575px;
     background-color: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-    padding: 20px;
+    padding: 10px;
 }
 </style>
