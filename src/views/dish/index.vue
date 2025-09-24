@@ -37,7 +37,7 @@
         <el-table
             :data="records"
             stripe
-            height="85%">
+            height="88%">
             <el-table-column
                 label="序号"
                 type="index"
@@ -282,7 +282,7 @@
 }
 .container{
     width: auto;
-    height: 575px;
+    height: 660px;
     background-color: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);

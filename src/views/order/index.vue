@@ -27,7 +27,7 @@
             </el-menu>
         </div>
         <div class="body">
-            <el-table :data="records" stripe height="450px" width="100%" :default-sort="{prop: 'orderDate', order: 'descending'}">
+            <el-table :data="records" stripe height="100%" width="100%" :default-sort="{prop: 'orderDate', order: 'descending'}">
                 <el-table-column type="expand" width="30px">
                     <template slot-scope="props">
                         <el-form label-position="left" inline class="demo-table-expand">
@@ -291,11 +291,15 @@
 <style scoped>
 .container{
     width: auto;
-    height: 555px;
+    height: 640px;
     background-color: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     padding: 10px;
+}
+
+.body{
+    height:85%
 }
 .demo-table-expand {
     padding-left: 50px;

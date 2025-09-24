@@ -79,7 +79,7 @@ export default {
 <style scoped>
 /* 整体布局 */
 .layout{
-  height: 755px;
+  height: 840px;
   min-width: 1400px;
   display: flex;
   flex-direction: column;

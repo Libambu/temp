@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <div class = "title"> 
-        <h3>菜品信息</h3>
+        <h2>菜品信息</h2>
     </div>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" style="padding:20px 300px;">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" style="padding:50px 300px;">
       <el-form-item label="菜品名称" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
@@ -195,14 +195,14 @@
 .title{
     background-color: #4ea3e9;
     color: #fff;
-    height: 60px;
+    height: 80px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     align-content: center;
 }
 .container{
     width: auto;
-    height: 570px;
+    height: 660px;
     background-color: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
