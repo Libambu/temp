@@ -198,12 +198,17 @@
             },
             //修改菜品信息
             changeDish(row){
-                this.$router.push({
-                    path: '/home/dish/dishInfo',
-                    query: {
-                        'id':row.foodId
-                    }
-                })
+                if(row.status == '1'){
+                    this.$message.warning('商品在售，无法修改!')
+                }else{
+                    this.$router.push({
+                        path: '/home/dish/dishInfo',
+                        query: {
+                            'id':row.foodId
+                        }
+                    })
+                }
+                
             },
             //查询分类
             categoryQuary(){

@@ -1,6 +1,6 @@
 <template>
   <div class="info-perfect">
-    <form @submit.prevent="submitForm">
+    <form @submit.prevent="">
       <h2 >商家信息完善</h2>
       <!-- 商家名称 -->
       <div class="form-row">

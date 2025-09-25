@@ -163,7 +163,7 @@
                     'adminToken': localStorage.getItem('adminToken')
                 }
             }).then(res=>{
-                this.totalRate = res.data.totalRate;
+                this.totalRate = res.data.data.totalRate;
                 console.log(res.data);
             }).catch(err =>{
                 console.log(err);
