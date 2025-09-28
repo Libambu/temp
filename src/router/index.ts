@@ -50,7 +50,7 @@ const router = new VueRouter({
 
 
 /* ===== 全局前置守卫 ===== */
-/*
+
 router.beforeEach((to, from, next) => {
   const hasToken = Cookies.get('adminToken')        // 读登录凭证
   const whiteList = ['/login']                      // 白名单，无需登录
@@ -69,7 +69,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
-*/
+
 
 export default router
 
